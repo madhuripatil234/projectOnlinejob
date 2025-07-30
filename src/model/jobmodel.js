@@ -15,3 +15,36 @@ exports.savejobData=(name)=>{
         });
     });
 }
+exports.getjobCount = () => {
+    return new Promise((resolve, reject) => {
+        db.query("select count(*) as total from jobs", (err, result) => {
+            if (err) reject(err);
+            else resolve(result[0].total);
+        });
+    });
+};
+
+exports.getPaginatedjob = (limit, offset) => {
+    return new Promise((resolve, reject) => {
+        db.query("select * from jobs order by jid desc limit ? offset ?", [limit, offset], (err, results) => {
+            if (err) reject(err);
+            else resolve(results);
+        });
+    });
+};
+
+
+exports.deletejobById=(id)=>{
+    return new Promise((resolve,reject)=>{
+        db.query("delete from jobs where jid=?",[id],(err,result)=>{
+            if(err)
+            {
+                reject(err);
+            }
+            else{
+                resolve(result);
+            }
+        })
+    })
+
+}

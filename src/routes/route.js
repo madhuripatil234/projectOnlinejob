@@ -15,6 +15,10 @@ router.get("/update",Hrportal.updateHrview);
 router.post("/upddate",Hrportal.HrFinalUpdate);
 router.get("/searchHRpByName",Hrportal.searchByName);
 router.post("/addjobs",jobportal.jobadd);
+router.get("/detelejob",jobportal.deletejob);
+router.get("/viewjobs",jobportal.viewjob);
+
+
 
 
 
