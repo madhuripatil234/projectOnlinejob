@@ -1,7 +1,8 @@
 let express=require("express");
-
 let loginportal=require("../controller/logincontroller");
 let Hrportal=require("../controller/HRcontroller");
+let jobportal=require("../controller/jobcontroller");
+
 let router=express.Router();
 
 router.post("/loginadmin",loginportal.adminlogin);
@@ -13,7 +14,7 @@ router.get("/detelehr",Hrportal.deleteHR);
 router.get("/update",Hrportal.updateHrview);
 router.post("/upddate",Hrportal.HrFinalUpdate);
 router.get("/searchHRpByName",Hrportal.searchByName);
-
+router.post("/addjobs",jobportal.jobadd);
 
 
 
