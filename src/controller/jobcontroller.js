@@ -68,4 +68,44 @@ exports.deletejob = (req, res) => {
   });
 };
 
+exports.jobFinalUpdate = (req, res) => {
+    let { jid, company_name, title, description, location, salary, job_type } = req.body;
+    
+    let promise = jobmod.finalUpdatejob(jid, company_name, title, description, location, salary, job_type);
+
+  promise.then(() => {
+    let p = jobmod.getPaginatedjob(10, 0);  
+
+    p.then((hrList) => {
+      res.json({
+        status: "update",
+        joblist: hrList,
+        msg: "job updated successfully..."
+      });
+    });
+
+    p.catch((err) => {
+      res.json({
+        status: "error",
+        msg: "job not update.",
+      
+      });
+    });
+  });
+};
+ exports.searchBytitle=((req,res)=>{
+        let name=req.query.title;
+        
+    
+        let promise=jobmod.getBytitle(name,);
+        promise.then((result)=>{
+            res.json(result);
+    
+        }).catch((err)=>{
+            res.send("something went wrong");
+        })
+
+    });
+
+
 

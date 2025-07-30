@@ -2,7 +2,6 @@ let express=require("express");
 let loginportal=require("../controller/logincontroller");
 let Hrportal=require("../controller/HRcontroller");
 let jobportal=require("../controller/jobcontroller");
-
 let router=express.Router();
 
 router.post("/loginadmin",loginportal.adminlogin);
@@ -17,9 +16,7 @@ router.get("/searchHRpByName",Hrportal.searchByName);
 router.post("/addjobs",jobportal.jobadd);
 router.get("/viewjobs",jobportal.viewjob);
 router.get("/detelejob",jobportal.deletejob);
-
-
-
-
+router.post("/upddatejob",jobportal.jobFinalUpdate);
+router.get("/searchjobpBytitle",jobportal.searchBytitle);
 
 module.exports=router;

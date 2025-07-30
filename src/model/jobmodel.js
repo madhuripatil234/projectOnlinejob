@@ -48,3 +48,34 @@ exports.deletejobById=(id)=>{
     })
 
 }
+
+exports.finalUpdatejob = (jid,company_name, title, description, location, salary, job_type) => {
+    return new Promise((resolve, reject) => {
+        db.query(
+            "update jobs set company_name=?, title=?, description=?, location=?, salary=?, job_type=? WHERE jid=?",
+            [company_name, title, description, location, salary, job_type, jid],
+            (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve("success");
+                }
+            }
+        );
+    });
+};
+
+exports.getBytitle=(name)=>{
+    return new Promise((resolve,reject)=>{
+     db.query("select *from jobs where title like '%" + name + "%'", (err, result) => {
+            if(err)
+            {
+                reject(err);
+            }
+            else{
+                resolve(result);
+            }
+        })
+    })
+
+}
