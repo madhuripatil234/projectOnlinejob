@@ -1,4 +1,4 @@
-let jobmod = require("../model/jobmodel");
+let jobmod = require("../model/loginmodel");
 
 exports.adminlogin = (req, res) => {
     let {aname, pass, role } = req.body;
