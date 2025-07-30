@@ -39,20 +39,33 @@ exports.viewjob = (req, res) => {
 };
 
 
-exports.deletejob=((req,res)=>{
-        let id=parseInt(req.query.jid);
-        let promise=jobmod.deletejobById(id);
-         promise.then((result)=>{
-         let p=jobmod.getAlljob();
-        p.then((result)=>{
-            res.json({status:"delete",joblist:result,msg:"job detele succesfully.."});
+exports.deletejob = (req, res) => {
+  let id = parseInt(req.query.jid);
+  let limit = 10;
+  let offset = 0;
 
-        });
-        p.catch((err)=>{
-            res.json({status:"not delete",msg:"not delete.."});
+  let promise = jobmod.deletejobById(id);
 
-        }); 
+  promise.then((result) => {
+    let p = jobmod.getPaginatedjob(limit, offset);
 
+    p.then((joblist) => {
+      res.json({
+        status: "delete",
+        joblist: joblist,
+        msg: "Job deleted successfully."
+      });
     });
 
- });
+    p.catch((err) => {
+      res.json({
+        status: "error",
+        msg: "not delete.",
+        error: err.message
+      });
+    });
+
+  });
+};
+
+

@@ -51,7 +51,7 @@ exports.deleteHrById=(id)=>{
 
 }
 
-exports.finalUpdate = (hid, hname, pass, email, contact_number, company_name, experience, role) => {
+exports.finalUpdate = (hid,hname, pass, email, contact_number, company_name, experience, role) => {
     return new Promise((resolve, reject) => {
         db.query(
             "update hrlogin set hname=?, pass=?, email=?, contact_number=?, company_name=?, experience=?, role=? WHERE hid=?",

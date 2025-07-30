@@ -37,26 +37,38 @@ exports.viewHR = (req, res) => {
         res.json({ status: "not view", msg: err });
     });
 };
+exports.deleteHr = (req, res) => {
+  let id = parseInt(req.query.jid);
+  let limit = 10;
+  let offset = 0;
 
+  let promise = jobmod.deleteHrById(id);
 
-  exports.deleteHR=((req,res)=>{
-        let id=parseInt(req.query.hid);
-        let promise=jobmod.deleteHrById(id);
-         promise.then((result)=>{
-         let p=jobmod.getAllHR();
-        p.then((result)=>{
-            res.json({status:"delete",joblist:result,msg:"HR detele succesfully.."});
+  promise.then((result) => {
+    let p = jobmod.getPaginatedHR(limit, offset);
 
-        });
-        p.catch((err)=>{
-            res.json({status:"not delete",msg:"not delete.."});
-
-        }); 
-
+    p.then((joblist) => {
+      res.json({
+        status: "delete",
+        joblist: joblist,
+        msg: "HR deleted successfully."
+      });
     });
 
- });
+    p.catch((err) => {
+      res.json({
+        status: "error",
+        msg: "not delete.",
+        error: err.message
+      });
+    });
 
+  });
+};
+
+
+
+  
   exports.updateHrview=(req,res)=>{
     res.json("valid",{hname:req.query.hname,
                                 pass:req.query.pass,
@@ -70,23 +82,34 @@ exports.viewHR = (req, res) => {
 
 }
 
-exports.HrFinalUpdate=(req,res)=>{
-    let { hid, hname, pass, email, contact_number, company_name, experience, role } = req.body;
-    let promise = jobmod.finalUpdate(hid, hname, pass, email, contact_number, company_name, experience, role);
-         promise.then((result)=>{
-        let p=jobmod.getAllHR();
-        p.then((result)=>{
-            res.json("update",{joblist:result,msg:"update HR successfully..."});
-        })
+exports.HrFinalUpdate = (req, res) => {
+  let { hid, hname, pass, email, contact_number, company_name, experience, role } = req.body;
 
-        });
-        promise.catch((err)=>{
-            res.send("HR not update");
+  let promise = jobmod.finalUpdate(hid, hname, pass, email, contact_number, company_name, experience, role);
 
-        }); 
-    }
+  promise.then(() => {
+    let p = jobmod.getPaginatedHR(10, 0);  
 
-     exports.searchByName=((req,res)=>{
+    p.then((hrList) => {
+      res.json({
+        status: "update",
+        joblist: hrList,
+        msg: "HR updated successfully..."
+      });
+    });
+
+    p.catch((err) => {
+      res.json({
+        status: "error",
+        msg: "HR not update.",
+      
+      });
+    });
+  });
+};
+
+
+    exports.searchByName=((req,res)=>{
         let hname=req.query.hname;
         
     
