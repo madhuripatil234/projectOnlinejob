@@ -65,9 +65,10 @@ exports.finalUpdatejob = (jid,company_name, title, description, location, salary
     });
 };
 
-exports.getBytitle=(name)=>{
+exports.getBytitleanddate=(name,date)=>{
     return new Promise((resolve,reject)=>{
-     db.query("select *from jobs where title like '%" + name + "%'", (err, result) => {
+         db.query("select *from jobs where title like '%" + name + "%' and posted_date_time like '%"+date+"%'", (err, result) => {
+
             if(err)
             {
                 reject(err);

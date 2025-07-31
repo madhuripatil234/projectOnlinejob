@@ -95,14 +95,15 @@ exports.jobFinalUpdate = (req, res) => {
 };
  exports.searchBytitle=((req,res)=>{
         let name=req.query.title;
+        let date=req.query.posted_date_time;
         
     
-        let promise=jobmod.getBytitle(name,);
+        let promise=jobmod.getBytitleanddate(name,date);
         promise.then((result)=>{
-            res.json(result);
+            res.json({status:"valid",data:result});
     
         }).catch((err)=>{
-            res.send("something went wrong");
+            res.send("something went wrong"+err.message);
         })
 
     });

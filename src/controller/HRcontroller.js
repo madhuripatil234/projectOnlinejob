@@ -38,7 +38,7 @@ exports.viewHR = (req, res) => {
     });
 };
 exports.deleteHr = (req, res) => {
-  let id = parseInt(req.query.jid);
+  let id = parseInt(req.query.hid);
   let limit = 10;
   let offset = 0;
 
