@@ -123,6 +123,17 @@ exports.HrFinalUpdate = (req, res) => {
 
     });
 
+    exports.interviewtime=((req,res)=>{
+    let {idate,itime,mode,location,meeting_link,aid}=req.body;
+    let promise=jobmod.interviewData([idate,itime,mode,location,meeting_link,aid]);
+    promise.then((result)=>{
+         res.json({status:"valid",msg: result});
+    
+    }).catch((err)=>{
+        res.json({status:"Not valid",msg: err});
+    });
+});
+
 
 
 

@@ -82,6 +82,23 @@ exports.getByName=(name)=>{
 
 }
 
+exports.interviewData=(name)=>{
+
+    return new Promise((resolve,reject)=>{
+
+        db.query("insert into interviews values('0',?,?,?,?,?,?)",[...name],(err,results)=>{
+            if(err)
+            {
+                reject("not submit "+err.message);
+            }
+            else{
+                resolve("submit successfull..");
+            }
+
+        });
+    });
+}
+
 
 
 
