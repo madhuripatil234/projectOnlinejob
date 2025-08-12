@@ -3,8 +3,8 @@ const adminsendmail = require('../config/mail.js');
 
 
 exports.HRadd=((req,res)=>{
-    let {hname,pass,email,contact_number,company_name,experience,role}=req.body;
-    let promise=jobmod.saveHRData([hname,pass,email,contact_number,company_name,experience,role]);
+    let {name,pass,email,contact_number,company_name,experience,role}=req.body;
+    let promise=jobmod.saveHRData([name,pass,email,contact_number,company_name,experience,role]);
     promise.then((result)=>{
          res.json({status:"valid",msg: result});
     
@@ -85,9 +85,9 @@ exports.deleteHr = (req, res) => {
 }
 
 exports.HrFinalUpdate = (req, res) => {
-  let { hid, hname, pass, email, contact_number, company_name, experience, role } = req.body;
+  let { hid, name, pass, email, contact_number, company_name, experience, role } = req.body;
 
-  let promise = jobmod.finalUpdate(hid, hname, pass, email, contact_number, company_name, experience, role);
+  let promise = jobmod.finalUpdate(hid, name, pass, email, contact_number, company_name, experience, role);
 
   promise.then(() => {
     let p = jobmod.getPaginatedHR(10, 0);  
@@ -112,10 +112,10 @@ exports.HrFinalUpdate = (req, res) => {
 
 
     exports.searchByName=((req,res)=>{
-        let hname=req.query.hname;
+        let name=req.query.name;
         
     
-        let promise=jobmod.getByName(hname,);
+        let promise=jobmod.getByName(name,);
         promise.then((result)=>{
             res.json(result);
     
@@ -131,9 +131,9 @@ exports.interviewtime = async (req, res) => {
     const { idate, itime, mode, location, meeting_link, aid } = req.body;
     const values = [idate, itime, mode, location, meeting_link, aid];
     await jobmod.scheduleInterview(values);
-    const { uname, uemail, title } = await jobmod.getCandidateDetails(aid);
+    const { name, uemail, title } = await jobmod.getCandidateDetails(aid);
     const message = `
-            Hello ${uname},
+            Hello ${name},
 
             Greetings from TCS!
 

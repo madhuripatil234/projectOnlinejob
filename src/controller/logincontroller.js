@@ -1,9 +1,9 @@
 let jobmod = require("../model/loginmodel");
 
 exports.adminlogin = (req, res) => {
-    let {aname, pass, role } = req.body;
+    let {name, pass, role } = req.body;
 
-    let promise = jobmod.adminData(aname, pass,role);
+    let promise = jobmod.adminData(name, pass,role);
 
     promise.then((result) => {
         res.json({ status: "valid", msg: result });
@@ -40,10 +40,10 @@ exports.userlogin = (req, res) => {
     let {name,email,subject,message,submitted_at}=req.body;
     let promise=jobmod.contact([name,email,subject,message,submitted_at]);
     promise.then((result)=>{
-         res.json({status:"valid",msg: result});
+         res.json({status:"Contact info submitted...",msg: result});
     
     }).catch((err)=>{
-        res.json({status:"Not valid",msg: err});
+        res.json({status:"Not submit",msg: err});
     });
 });
 

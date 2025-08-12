@@ -1,10 +1,10 @@
 let db=require("../../db.js");
 
-exports.adminData = (aname,pass,role) => {
+exports.adminData = (name,pass,role) => {
    
 
     return new Promise((resolve, reject) => {
-        db.query("select *from admin where aname=? and pass=? and role=?", [aname, pass,role], (err, results) => {
+        db.query("select *from admin where name=? and pass=? and role=?", [name, pass,role], (err, results) => {
                 
             if (err) {
                 reject("Login failed");
@@ -17,9 +17,9 @@ exports.adminData = (aname,pass,role) => {
     });
 };
 
-exports.hrData = (hname,pass,role) => {
+exports.hrData = (name,pass,role) => {
      return new Promise((resolve, reject) => {
-        db.query("select *from hrlogin where hname=? and pass=? and role=?", [hname, pass,role], (err, results) => {
+        db.query("select *from hrlogin where hname=? and pass=? and role=?", [name, pass,role], (err, results) => {
                 
             if (err) {
                 reject("Login failed");
@@ -32,9 +32,9 @@ exports.hrData = (hname,pass,role) => {
     });
 };
 
-exports.userData = (uname,pass,role) => {
+exports.userData = (name,pass,role) => {
      return new Promise((resolve, reject) => {
-        db.query("select *from jobSeeker where uname=? and pass=? and role=?", [uname, pass,role], (err, results) => {
+        db.query("select *from jobSeeker where uname=? and pass=? and role=?", [name, pass,role], (err, results) => {
                 
             if (err) {
                 reject("Login failed");
