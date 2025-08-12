@@ -1,4 +1,6 @@
 let jobmod = require("../model/HRmodel");
+const adminsendmail = require('../config/mail.js');
+
 
 exports.HRadd=((req,res)=>{
     let {hname,pass,email,contact_number,company_name,experience,role}=req.body;
@@ -123,16 +125,53 @@ exports.HrFinalUpdate = (req, res) => {
 
     });
 
-    exports.interviewtime=((req,res)=>{
-    let {idate,itime,mode,location,meeting_link,aid}=req.body;
-    let promise=jobmod.interviewData([idate,itime,mode,location,meeting_link,aid]);
-    promise.then((result)=>{
-         res.json({status:"valid",msg: result});
-    
-    }).catch((err)=>{
-        res.json({status:"Not valid",msg: err});
+
+exports.interviewtime = async (req, res) => {
+  
+    const { idate, itime, mode, location, meeting_link, aid } = req.body;
+    const values = [idate, itime, mode, location, meeting_link, aid];
+    await jobmod.scheduleInterview(values);
+    const { uname, uemail, title } = await jobmod.getCandidateDetails(aid);
+    const message = `
+            Hello ${uname},
+
+            Greetings from TCS!
+
+            Congratulations on your performance in TCS. 
+
+            Coming on the TCS 2025 Hiring Process (NQT).
+
+            You are Eligible for TCS.
+
+            Your interview for "${title}" has been scheduled.
+            Details:
+            Date: ${idate}
+            Time: ${itime}
+            Mode: ${mode}
+            ${mode.toLowerCase() === "online" ? ` Meeting Link: ${meeting_link}` : ` Location: ${location}`}
+
+           All the best!
+            `;
+
+  
+    adminsendmail.sendMail({
+      from: "dipalipatil2622001@gmail.com",
+      to: uemail,
+      subject: `Interview Scheduled - ${title}`,
+      text: message
+    }, (err, info) => {
+      if (err) {
+        return res.status(500).json({ msg: "Email failed", error: err.message });
+      }
+
+      res.status(201).json({
+        msg: "Interview scheduled and email sent",
+        email: uemail
+      });
     });
-});
+
+
+};
 
 
 

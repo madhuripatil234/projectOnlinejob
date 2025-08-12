@@ -1,4 +1,5 @@
 let db=require("../../db.js");
+//const transporter = require('../config/mail.js');
 
 exports.saveHRData=(name)=>{
 
@@ -82,24 +83,36 @@ exports.getByName=(name)=>{
 
 }
 
-exports.interviewData=(name)=>{
+exports.scheduleInterview = (values) => {
+  return new Promise((resolve, reject) => {
+    const [idate, itime, mode, location, meeting_link, aid] = values;
 
-    return new Promise((resolve,reject)=>{
+    const insertSql = `
+      INSERT INTO interviews (idate, itime, mode, location, meeting_link, aid)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
 
-        db.query("insert into interviews values('0',?,?,?,?,?,?)",[...name],(err,results)=>{
-            if(err)
-            {
-                reject("not submit "+err.message);
-            }
-            else{
-                resolve("submit successfull..");
-            }
-
-        });
+    db.query(insertSql, values, (err, result) => {
+      if (err) return reject(err);
+      resolve("Interview inserted");
     });
-}
+  });
+};
 
+exports.getCandidateDetails = (aid) => {
+  return new Promise((resolve, reject) => {
+    const fetchSql = `
+      SELECT u.uname, u.uemail, j.title
+      FROM applications a
+      JOIN jobseeker u ON a.uid = u.uid
+      JOIN jobs j ON a.jid = j.jid
+      WHERE a.aid = ?
+    `;
 
-
-
-
+    db.query(fetchSql, [aid], (err, results) => {
+      if (err) return reject(err);
+      if (results.length === 0) return reject(new Error("Candidate not found"));
+      resolve(results[0]);
+    });
+  });
+};
